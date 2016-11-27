@@ -2,7 +2,7 @@ using System;
 using GenericNet.DataContext.Abstractions;
 using Microsoft.EntityFrameworkCore;
 
-namespace GenericNet.DataContext
+namespace GenericNet.DataContext.EfCore
 {
     public class DataContext : DbContext, IDataContextAsync
     {

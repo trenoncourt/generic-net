@@ -7,8 +7,8 @@
 
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>cb72521c-5abb-4156-b800-4fdea7aae5d2</ProjectGuid>
-    <RootNamespace>GenericNet.DataContext</RootNamespace>
+    <ProjectGuid>0a4ce1bc-84e9-4490-ab17-05d40a7486c4</ProjectGuid>
+    <RootNamespace>GenericNet.UnitOfWork.EfCore</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>

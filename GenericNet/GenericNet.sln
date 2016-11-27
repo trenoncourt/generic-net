@@ -10,11 +10,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		global.json = global.json
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "GenericNet.DataContext", "src\GenericNet.DataContext\GenericNet.DataContext.xproj", "{CB72521C-5ABB-4156-B800-4FDEA7AAE5D2}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - DataContext", "1 - DataContext", "{4DABD4CE-2152-4B5B-942E-229EDA7D0D11}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "GenericNet.DataContext.Abstractions", "src\GenericNet.DataContext.Abstractions\GenericNet.DataContext.Abstractions.xproj", "{B6842EC6-7638-4EAD-8A5A-78651D208C9F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - UnitOfWork", "2 - UnitOfWork", "{B5DBA8DB-ADFB-437B-BC89-2B7647BC24EE}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "GenericNet.UnitOfWork.Abstractions", "src\GenericNet.UnitOfWork.Abstractions\GenericNet.UnitOfWork.Abstractions.xproj", "{89F46039-9D58-41CE-AFF9-E2A938E7E844}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "GenericNet.UnitOfWork.EfCore", "src\GenericNet.UnitOfWork.EfCore\GenericNet.UnitOfWork.EfCore.xproj", "{0A4CE1BC-84E9-4490-AB17-05D40A7486C4}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "GenericNet.DataContext.EfCore", "src\GenericNet.DataContext.EfCore\GenericNet.DataContext.EfCore.xproj", "{65956176-6556-4FF2-BF9B-F627186CBA34}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,21 +28,32 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CB72521C-5ABB-4156-B800-4FDEA7AAE5D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CB72521C-5ABB-4156-B800-4FDEA7AAE5D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CB72521C-5ABB-4156-B800-4FDEA7AAE5D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CB72521C-5ABB-4156-B800-4FDEA7AAE5D2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B6842EC6-7638-4EAD-8A5A-78651D208C9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B6842EC6-7638-4EAD-8A5A-78651D208C9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6842EC6-7638-4EAD-8A5A-78651D208C9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6842EC6-7638-4EAD-8A5A-78651D208C9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89F46039-9D58-41CE-AFF9-E2A938E7E844}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89F46039-9D58-41CE-AFF9-E2A938E7E844}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89F46039-9D58-41CE-AFF9-E2A938E7E844}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89F46039-9D58-41CE-AFF9-E2A938E7E844}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A4CE1BC-84E9-4490-AB17-05D40A7486C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A4CE1BC-84E9-4490-AB17-05D40A7486C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A4CE1BC-84E9-4490-AB17-05D40A7486C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A4CE1BC-84E9-4490-AB17-05D40A7486C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65956176-6556-4FF2-BF9B-F627186CBA34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65956176-6556-4FF2-BF9B-F627186CBA34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65956176-6556-4FF2-BF9B-F627186CBA34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65956176-6556-4FF2-BF9B-F627186CBA34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{CB72521C-5ABB-4156-B800-4FDEA7AAE5D2} = {4DABD4CE-2152-4B5B-942E-229EDA7D0D11}
 		{4DABD4CE-2152-4B5B-942E-229EDA7D0D11} = {382D8695-2AED-4D16-AB40-1EFD85177A9C}
 		{B6842EC6-7638-4EAD-8A5A-78651D208C9F} = {4DABD4CE-2152-4B5B-942E-229EDA7D0D11}
+		{B5DBA8DB-ADFB-437B-BC89-2B7647BC24EE} = {382D8695-2AED-4D16-AB40-1EFD85177A9C}
+		{89F46039-9D58-41CE-AFF9-E2A938E7E844} = {B5DBA8DB-ADFB-437B-BC89-2B7647BC24EE}
+		{0A4CE1BC-84E9-4490-AB17-05D40A7486C4} = {B5DBA8DB-ADFB-437B-BC89-2B7647BC24EE}
+		{65956176-6556-4FF2-BF9B-F627186CBA34} = {4DABD4CE-2152-4B5B-942E-229EDA7D0D11}
 	EndGlobalSection
 EndGlobal
