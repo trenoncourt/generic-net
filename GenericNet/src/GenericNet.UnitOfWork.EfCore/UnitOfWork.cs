@@ -5,7 +5,6 @@ using GenericNet.DataContext.Abstractions;
 using GenericNet.UnitOfWork.Abstractions;
 using GenericNet.UnitOfWork.EfCore.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using IsolationLevel = GenericNet.UnitOfWork.Abstractions.IsolationLevel;
 
 namespace GenericNet.UnitOfWork.EfCore
@@ -17,9 +16,9 @@ namespace GenericNet.UnitOfWork.EfCore
         protected DbConnection Connection;
         protected DbTransaction Transaction;
 
-        public UnitOfWork(IServiceProvider serviceProvider)
+        public UnitOfWork(TDataContext dataContext)
         {
-            DataContext = serviceProvider.GetService<TDataContext>();
+            DataContext = dataContext;
         }
 
         public virtual void Dispose()
