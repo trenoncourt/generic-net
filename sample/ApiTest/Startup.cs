@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System.Data.SqlClient;
+using Dapper;
 
 namespace ApiTest
 {
@@ -40,11 +42,19 @@ namespace ApiTest
                     settings.NullValueHandling = NullValueHandling.Ignore;
                     settings.DefaultValueHandling = DefaultValueHandling.Ignore;
                 }); 
-            services.AddEntityFramework()
+            services.AddScoped<SqlConnection>()
+            //services.AddEntityFramework()
                 .AddDbContext<AdventureWorksContext>(options => options.UseSqlServer("Server=tcp:trenoncourttest.database.windows.net,1433;Initial Catalog=AdventureWorks;Persist Security Info=False;User ID=trenoncourt;Password=Amour1105//0;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
             services.AddScoped<IUnitOfWorkAsync<AdventureWorksContext>, UnitOfWorkAsync<AdventureWorksContext>>();
-            services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
-            //services.AddScoped<IUnitOfWorkAsync<SqlConnection>>(provider => new GenericNet.UnitOfWork.Dapper.UnitOfWorkAsync<SqlConnection>(@"Server = tcp:trenoncourttest2.database.windows.net, 1433; Initial Catalog = trenoncourttest2; Persist Security Info = False; User ID = trenoncourt; Password = Amour1105//0;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
+            services.AddScoped(typeof(IRepository<AdventureWorksContext, Product>), typeof(Repository<AdventureWorksContext, Product>));
+
+            services.AddScoped(
+                provider =>
+                    new SqlConnection(
+                        @"Server = tcp:trenoncourttest2.database.windows.net, 1433; Initial Catalog = trenoncourttest2; Persist Security Info = False; User ID = trenoncourt; Password = Amour1105//0;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
+            services.AddScoped<IUnitOfWorkAsync<SqlConnection>>(
+                provider => new GenericNet.UnitOfWork.Dapper.UnitOfWorkAsync<SqlConnection>(provider));
+            services.AddScoped(typeof(IRepository<SqlConnection, Product>), typeof(GenericNet.Repository.Dapper.Repository<SqlConnection, Product>));
 
         }
 

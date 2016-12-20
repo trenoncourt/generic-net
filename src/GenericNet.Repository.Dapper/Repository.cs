@@ -32,7 +32,7 @@ namespace GenericNet.Repository.Dapper
             int? take = null,
             bool tracking = false)
         {
-            throw new NotImplementedException();
+            return Connection.Query<TEntity>($"SELECT * FROM {typeof(TEntity).Name}");
         }
 
         public virtual IEnumerable<TResult> Select<TResult>(

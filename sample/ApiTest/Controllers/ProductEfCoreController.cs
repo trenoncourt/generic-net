@@ -6,13 +6,13 @@ using GenericNet.UnitOfWork.Abstractions;
 
 namespace ApiTest.Controllers
 {
-    [Route("api/products")]
-    public class ProductController
+    [Route("api/ProductEfCore")]
+    public class ProductEfCoreController
     {
         private readonly IUnitOfWorkAsync<AdventureWorksContext> _unitOfWork;
         private readonly IRepository<AdventureWorksContext, Product> _repository;
 
-        public ProductController(IUnitOfWorkAsync<AdventureWorksContext> unitOfWork)
+        public ProductEfCoreController(IUnitOfWorkAsync<AdventureWorksContext> unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }

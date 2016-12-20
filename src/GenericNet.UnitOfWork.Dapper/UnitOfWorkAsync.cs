@@ -10,7 +10,7 @@ namespace GenericNet.UnitOfWork.Dapper
     public class UnitOfWorkAsync<TConnection> : UnitOfWork<TConnection>, IUnitOfWorkAsync<TConnection>
         where TConnection : class, IDbConnection, new()
     {
-        public UnitOfWorkAsync(string connectionString) : base(connectionString)
+        public UnitOfWorkAsync(IServiceProvider serviceProvider) : base(serviceProvider)
         {
         }
 
