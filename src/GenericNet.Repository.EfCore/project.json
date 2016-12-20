@@ -1,0 +1,14 @@
+﻿{
+  "version": "1.0.0",
+
+  "dependencies": {
+    "GenericNet.Repository.Abstractions": "*",
+    "GenericNet.UnitOfWork.Abstractions": "*",
+    "Microsoft.EntityFrameworkCore": "1.1.0",
+    "NETStandard.Library": "1.6.1"
+  },
+
+  "frameworks": {
+    "netstandard1.3": {}
+  }
+}
