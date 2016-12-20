@@ -12,15 +12,14 @@ namespace ApiTest.Controllers
         private readonly IUnitOfWorkAsync<AdventureWorksContext> _unitOfWork;
         private readonly IRepository<AdventureWorksContext, Product> _repository;
 
-        public ProductController(IUnitOfWorkAsync<AdventureWorksContext> unitOfWork, IRepository<AdventureWorksContext, Product> repository)
+        public ProductController(IUnitOfWorkAsync<AdventureWorksContext> unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _repository = repository;
         }
 
-        public IEnumerable<Product> Get()
+        public IActionResult Get()
         {
-           return _unitOfWork.Repository<Product>().Select();
+           return new OkObjectResult(_unitOfWork.Repository<Product>().Select());
         }
     }
 }

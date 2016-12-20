@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GenericNet.Repository.Dapper
+namespace ApiTest.Controllers
 {
-    public class Class1
+    public class ProductDapperController
     {
-        public Class1()
-        {
-        }
     }
 }

@@ -1,22 +1,28 @@
-﻿using System;
+﻿using GenericNet.Repository.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading;
-using System.Threading.Tasks;
-using GenericNet.Repository.Abstractions;
-using Microsoft.EntityFrameworkCore;
+using System.Data;
+using System.Data.Common;
+using System.Data.SqlClient;
+using System.Reflection;
+using Dapper;
 
-namespace GenericNet.Repository.EfCore
+namespace GenericNet.Repository.Dapper
 {
-    public class RepositoryAsync<TDbContext, TEntity> : Repository<TDbContext, TEntity>, IRepositoryAsync<TDbContext, TEntity>
-        where TDbContext : DbContext
+    public class Repository<TConnection, TEntity> : IRepository<TConnection, TEntity>
+        where TConnection : class, IDbConnection, new()
         where TEntity : class
     {
-        public RepositoryAsync(TDbContext context) : base(context)
+        protected readonly TConnection Connection;
+
+        public Repository(TConnection connection)
         {
+            Connection = connection;
         }
-        public virtual async Task<IEnumerable<TEntity>> SelectAsync(
+
+        public virtual IEnumerable<TEntity> Select(
             Expression<Func<TEntity, bool>> where = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             List<Expression<Func<TEntity, object>>> includes = null,
@@ -26,11 +32,10 @@ namespace GenericNet.Repository.EfCore
             int? take = null,
             bool tracking = false)
         {
-            IQueryable<TEntity> query = Query(where, orderBy, includes, skipPage, takePage, skip, take, tracking);
-            return await query.ToListAsync().ConfigureAwait(false);
+            throw new NotImplementedException();
         }
 
-        public virtual async Task<IEnumerable<TResult>> SelectAsync<TResult>(
+        public virtual IEnumerable<TResult> Select<TResult>(
             Expression<Func<TEntity, TResult>> select,
             Expression<Func<TEntity, bool>> where = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
@@ -41,95 +46,100 @@ namespace GenericNet.Repository.EfCore
             int? take = null,
             bool tracking = false)
         {
-            IQueryable<TEntity> query = Query(where, orderBy, includes, skipPage, takePage, skip, take, tracking);
-            return await query.Select(select).ToListAsync().ConfigureAwait(false);
+            throw new NotImplementedException();
         }
 
-        public virtual Task<TEntity> FindAsync(params object[] keyValues)
+        public virtual TEntity Find(params object[] key)
         {
-            return DbSet.FindAsync(keyValues);
-        }
-
-        public virtual Task<TEntity> FindAsync(object[] keyValues, CancellationToken cancellationToken)
-        {
-            return DbSet.FindAsync(keyValues, cancellationToken);
-        }
-
-        public virtual Task<TEntity> FindFirstAsync(
-            Expression<Func<TEntity, bool>> where = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            List<Expression<Func<TEntity, object>>> includes = null,
-            int? skipPage = null,
-            int? takePage = null,
-            int? skip = null,
-            int? take = null,
-            bool tracking = false)
-        {
-            IQueryable<TEntity> query = Query(where, orderBy, includes, skipPage, takePage, skip, take, tracking);
-            return query.FirstOrDefaultAsync();
-        }
-
-        public virtual Task<TResult> FindFirstAsync<TResult>(
-            Expression<Func<TEntity, TResult>> select,
-            Expression<Func<TEntity, bool>> where = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            List<Expression<Func<TEntity, object>>> includes = null,
-            int? skipPage = null,
-            int? takePage = null,
-            int? skip = null,
-            int? take = null,
-            bool tracking = false)
-        {
-            IQueryable<TEntity> query = Query(where, orderBy, includes, skipPage, takePage, skip, take, tracking);
-            return query.Select(select).FirstOrDefaultAsync();
-        }
-
-        public virtual Task<TEntity> FindLastAsync(
-            Expression<Func<TEntity, bool>> where = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            List<Expression<Func<TEntity, object>>> includes = null,
-            int? skipPage = null,
-            int? takePage = null,
-            int? skip = null,
-            int? take = null,
-            bool tracking = false)
-        {
-            IQueryable<TEntity> query = Query(where, orderBy, includes, skipPage, takePage, skip, take, tracking);
-            return query.LastOrDefaultAsync();
-        }
-
-        public virtual Task<TResult> FindLastAsync<TResult>(
-            Expression<Func<TEntity, TResult>> select,
-            Expression<Func<TEntity, bool>> where = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            List<Expression<Func<TEntity, object>>> includes = null,
-            int? skipPage = null,
-            int? takePage = null,
-            int? skip = null,
-            int? take = null,
-            bool tracking = false)
-        {
-            IQueryable<TEntity> query = Query(where, orderBy, includes, skipPage, takePage, skip, take, tracking);
-            return query.Select(select).LastOrDefaultAsync();
-        }
-        
-        public virtual Task<bool> DeleteAsync(object key)
-        {
-            return DeleteAsync(CancellationToken.None, key);
-        }
-
-        public virtual async Task<bool> DeleteAsync(CancellationToken cancellationToken, object key)
-        {
-            var entity = await FindAsync(cancellationToken, key).ConfigureAwait(false);
-
-            if (entity == null)
+            SqlConnection sqlConnection = Connection as SqlConnection;
+            if (sqlConnection != null)
             {
-                return false;
+                return Connection.QueryFirstOrDefault<TEntity>($"SELECT TOP 1 FROM {nameof(TEntity)}");
             }
-            
-            DbSet.Remove(entity);
+            throw new NotImplementedException();
+        }
 
-            return true;
+        public virtual TEntity FindFirst(
+            Expression<Func<TEntity, bool>> where = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+            List<Expression<Func<TEntity, object>>> includes = null,
+            int? skipPage = null,
+            int? takePage = null,
+            int? skip = null,
+            int? take = null,
+            bool tracking = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual TResult FindFirst<TResult>(
+            Expression<Func<TEntity, TResult>> select,
+            Expression<Func<TEntity, bool>> where = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+            List<Expression<Func<TEntity, object>>> includes = null,
+            int? skipPage = null,
+            int? takePage = null,
+            int? skip = null,
+            int? take = null,
+            bool tracking = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual TEntity FindLast(
+            Expression<Func<TEntity, bool>> where = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+            List<Expression<Func<TEntity, object>>> includes = null,
+            int? skipPage = null,
+            int? takePage = null,
+            int? skip = null,
+            int? take = null,
+            bool tracking = false)
+        {
+            throw new NotImplementedException();
+        }
+        public virtual TResult FindLast<TResult>(
+            Expression<Func<TEntity, TResult>> select,
+            Expression<Func<TEntity, bool>> where = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+            List<Expression<Func<TEntity, object>>> includes = null,
+            int? skipPage = null,
+            int? takePage = null,
+            int? skip = null,
+            int? take = null,
+            bool tracking = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual TEntity Insert(TEntity entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void InsertRange(IEnumerable<TEntity> entities)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual TEntity Update(TEntity entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void Delete(object id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void Delete(TEntity entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual IQueryable<TEntity> Queryable()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,22 +1,22 @@
-﻿using System;
+﻿using GenericNet.Repository.Abstractions;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using GenericNet.Repository.Abstractions;
-using Microsoft.EntityFrameworkCore;
 
-namespace GenericNet.Repository.EfCore
+namespace GenericNet.Repository.Dapper
 {
-    public class RepositoryAsync<TDbContext, TEntity> : Repository<TDbContext, TEntity>, IRepositoryAsync<TDbContext, TEntity>
-        where TDbContext : DbContext
+    public class RepositoryAsync<TConnection, TEntity> : Repository<TConnection, TEntity>, IRepositoryAsync<TConnection, TEntity>
+        where TConnection : class, IDbConnection, new()
         where TEntity : class
     {
-        public RepositoryAsync(TDbContext context) : base(context)
+        public RepositoryAsync(TConnection context) : base(context)
         {
         }
-        public virtual async Task<IEnumerable<TEntity>> SelectAsync(
+        public virtual Task<IEnumerable<TEntity>> SelectAsync(
             Expression<Func<TEntity, bool>> where = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             List<Expression<Func<TEntity, object>>> includes = null,
@@ -26,11 +26,10 @@ namespace GenericNet.Repository.EfCore
             int? take = null,
             bool tracking = false)
         {
-            IQueryable<TEntity> query = Query(where, orderBy, includes, skipPage, takePage, skip, take, tracking);
-            return await query.ToListAsync().ConfigureAwait(false);
+            throw new NotImplementedException();
         }
 
-        public virtual async Task<IEnumerable<TResult>> SelectAsync<TResult>(
+        public virtual Task<IEnumerable<TResult>> SelectAsync<TResult>(
             Expression<Func<TEntity, TResult>> select,
             Expression<Func<TEntity, bool>> where = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
@@ -41,18 +40,17 @@ namespace GenericNet.Repository.EfCore
             int? take = null,
             bool tracking = false)
         {
-            IQueryable<TEntity> query = Query(where, orderBy, includes, skipPage, takePage, skip, take, tracking);
-            return await query.Select(select).ToListAsync().ConfigureAwait(false);
+            throw new NotImplementedException();
         }
 
         public virtual Task<TEntity> FindAsync(params object[] keyValues)
         {
-            return DbSet.FindAsync(keyValues);
+            throw new NotImplementedException();
         }
 
         public virtual Task<TEntity> FindAsync(object[] keyValues, CancellationToken cancellationToken)
         {
-            return DbSet.FindAsync(keyValues, cancellationToken);
+            throw new NotImplementedException();
         }
 
         public virtual Task<TEntity> FindFirstAsync(
@@ -65,8 +63,7 @@ namespace GenericNet.Repository.EfCore
             int? take = null,
             bool tracking = false)
         {
-            IQueryable<TEntity> query = Query(where, orderBy, includes, skipPage, takePage, skip, take, tracking);
-            return query.FirstOrDefaultAsync();
+            throw new NotImplementedException();
         }
 
         public virtual Task<TResult> FindFirstAsync<TResult>(
@@ -80,8 +77,7 @@ namespace GenericNet.Repository.EfCore
             int? take = null,
             bool tracking = false)
         {
-            IQueryable<TEntity> query = Query(where, orderBy, includes, skipPage, takePage, skip, take, tracking);
-            return query.Select(select).FirstOrDefaultAsync();
+            throw new NotImplementedException();
         }
 
         public virtual Task<TEntity> FindLastAsync(
@@ -94,8 +90,7 @@ namespace GenericNet.Repository.EfCore
             int? take = null,
             bool tracking = false)
         {
-            IQueryable<TEntity> query = Query(where, orderBy, includes, skipPage, takePage, skip, take, tracking);
-            return query.LastOrDefaultAsync();
+            throw new NotImplementedException();
         }
 
         public virtual Task<TResult> FindLastAsync<TResult>(
@@ -109,27 +104,17 @@ namespace GenericNet.Repository.EfCore
             int? take = null,
             bool tracking = false)
         {
-            IQueryable<TEntity> query = Query(where, orderBy, includes, skipPage, takePage, skip, take, tracking);
-            return query.Select(select).LastOrDefaultAsync();
+            throw new NotImplementedException();
         }
         
         public virtual Task<bool> DeleteAsync(object key)
         {
-            return DeleteAsync(CancellationToken.None, key);
+            throw new NotImplementedException();
         }
 
-        public virtual async Task<bool> DeleteAsync(CancellationToken cancellationToken, object key)
+        public virtual Task<bool> DeleteAsync(CancellationToken cancellationToken, object key)
         {
-            var entity = await FindAsync(cancellationToken, key).ConfigureAwait(false);
-
-            if (entity == null)
-            {
-                return false;
-            }
-            
-            DbSet.Remove(entity);
-
-            return true;
+            throw new NotImplementedException();
         }
     }
 }

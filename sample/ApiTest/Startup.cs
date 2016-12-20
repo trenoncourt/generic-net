@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace ApiTest
 {
@@ -31,18 +33,25 @@ namespace ApiTest
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc();
+            services.AddMvcCore()
+                .AddJsonFormatters(settings =>
+                {
+                    settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    settings.NullValueHandling = NullValueHandling.Ignore;
+                    settings.DefaultValueHandling = DefaultValueHandling.Ignore;
+                }); 
             services.AddEntityFramework()
                 .AddDbContext<AdventureWorksContext>(options => options.UseSqlServer("Server=tcp:trenoncourttest.database.windows.net,1433;Initial Catalog=AdventureWorks;Persist Security Info=False;User ID=trenoncourt;Password=Amour1105//0;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
             services.AddScoped<IUnitOfWorkAsync<AdventureWorksContext>, UnitOfWorkAsync<AdventureWorksContext>>();
-            services.AddScoped<IRepository<AdventureWorksContext, Product>, Repository<AdventureWorksContext, Product>>();
+            services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+            //services.AddScoped<IUnitOfWorkAsync<SqlConnection>>(provider => new GenericNet.UnitOfWork.Dapper.UnitOfWorkAsync<SqlConnection>(@"Server = tcp:trenoncourttest2.database.windows.net, 1433; Initial Catalog = trenoncourttest2; Persist Security Info = False; User ID = trenoncourt; Password = Amour1105//0;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
 
             app.UseMvc();
         }
