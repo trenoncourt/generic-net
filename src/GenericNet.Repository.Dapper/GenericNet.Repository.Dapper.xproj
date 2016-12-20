@@ -7,8 +7,8 @@
 
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>b6842ec6-7638-4ead-8a5a-78651d208c9f</ProjectGuid>
-    <RootNamespace>GenericNet.DataContext.Abstractions</RootNamespace>
+    <ProjectGuid>6da74cb4-c9ba-4de7-8938-92b8e4f96a10</ProjectGuid>
+    <RootNamespace>GenericNet.Repository.Dapper</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
