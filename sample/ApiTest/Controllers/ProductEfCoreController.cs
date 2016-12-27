@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using ApiTest.Data;
+﻿using ApiTest.Data;
 using Microsoft.AspNetCore.Mvc;
 using GenericNet.Repository.Abstractions;
 using GenericNet.UnitOfWork.Abstractions;
@@ -9,17 +8,15 @@ namespace ApiTest.Controllers
     [Route("api/ProductEfCore")]
     public class ProductEfCoreController
     {
-        private readonly IUnitOfWorkAsync<AdventureWorksContext> _unitOfWork;
-        private readonly IRepository<AdventureWorksContext, Product> _repository;
-
-        public ProductEfCoreController(IUnitOfWorkAsync<AdventureWorksContext> unitOfWork)
+        public IActionResult Get([FromServices] IUnitOfWorkAsync<AdventureWorksContext> unitOfWork)
         {
-            _unitOfWork = unitOfWork;
+           return new OkObjectResult(unitOfWork.Repository<Product>().Select());
         }
 
-        public IActionResult Get()
+        [HttpGet("with_repository_injection")]
+        public IActionResult GetWithRepositoryInjection([FromServices] IRepository<AdventureWorksContext, Product> repository)
         {
-           return new OkObjectResult(_unitOfWork.Repository<Product>().Select());
+           return new OkObjectResult(repository.Select());
         }
     }
 }

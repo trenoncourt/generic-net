@@ -6,14 +6,12 @@ using GenericNet.UnitOfWork.EfCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Data.SqlClient;
-using Dapper;
 
 namespace ApiTest
 {
@@ -26,43 +24,48 @@ namespace ApiTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
+
+            /** TODO : Add your connection string with user secrets (or in appsettings.json) :
+             * 
+             *  {
+             *    "ConnectionStrings": {
+             *      "GenericNetDb": "..."
+             *    }
+             *  }
+             **/
+            if (env.IsDevelopment())
+            {
+                builder.AddUserSecrets();
+            }
             Configuration = builder.Build();
         }
 
         public IConfigurationRoot Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
             services.AddMvcCore()
                 .AddJsonFormatters(settings =>
                 {
                     settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                     settings.NullValueHandling = NullValueHandling.Ignore;
                     settings.DefaultValueHandling = DefaultValueHandling.Ignore;
-                }); 
-            services.AddScoped<SqlConnection>()
-            //services.AddEntityFramework()
-                .AddDbContext<AdventureWorksContext>(options => options.UseSqlServer("Server=tcp:trenoncourttest.database.windows.net,1433;Initial Catalog=AdventureWorks;Persist Security Info=False;User ID=trenoncourt;Password=Amour1105//0;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
-            services.AddScoped<IUnitOfWorkAsync<AdventureWorksContext>, UnitOfWorkAsync<AdventureWorksContext>>();
-            services.AddScoped(typeof(IRepository<AdventureWorksContext, Product>), typeof(Repository<AdventureWorksContext, Product>));
+                });
 
-            services.AddScoped(
-                provider =>
-                    new SqlConnection(
-                        @"Server = tcp:trenoncourttest2.database.windows.net, 1433; Initial Catalog = trenoncourttest2; Persist Security Info = False; User ID = trenoncourt; Password = Amour1105//0;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
-            services.AddScoped<IUnitOfWorkAsync<SqlConnection>>(
-                provider => new GenericNet.UnitOfWork.Dapper.UnitOfWorkAsync<SqlConnection>(provider));
-            services.AddScoped(typeof(IRepository<SqlConnection, Product>), typeof(GenericNet.Repository.Dapper.Repository<SqlConnection, Product>));
+            services.AddScoped<SqlConnection>()
+            .AddDbContext<AdventureWorksContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ShareezDev")))
+            .AddScoped<IUnitOfWorkAsync<AdventureWorksContext>, UnitOfWorkAsync<AdventureWorksContext>>()
+            .AddScoped(typeof(IRepository<AdventureWorksContext, Product>), typeof(Repository<AdventureWorksContext, Product>))
+
+            .AddScoped(provider => new SqlConnection(Configuration.GetConnectionString("ShareezDev")))
+            .AddScoped<IUnitOfWorkAsync<SqlConnection>>(provider => new GenericNet.UnitOfWork.Dapper.UnitOfWorkAsync<SqlConnection>(provider))
+            .AddScoped<IRepository<SqlConnection, Product>>(provider => new GenericNet.Repository.Dapper.Repository<SqlConnection,Product>(provider.GetService<SqlConnection>(), "SalesLT.Product"));
 
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-
             app.UseMvc();
         }
     }

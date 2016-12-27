@@ -1,25 +1,23 @@
-﻿using ApiTest.Data;
+﻿using System.Data.SqlClient;
+using ApiTest.Data;
 using GenericNet.Repository.Abstractions;
 using GenericNet.UnitOfWork.Abstractions;
 using Microsoft.AspNetCore.Mvc;
-using System.Data.SqlClient;
 
 namespace ApiTest.Controllers
 {
     [Route("api/ProductDapper")]
     public class ProductDapperController
     {
-        private readonly IUnitOfWorkAsync<SqlConnection> _unitOfWork;
-        private readonly IRepository<SqlConnection, Product> _repository;
-
-        public ProductDapperController(IUnitOfWorkAsync<SqlConnection> unitOfWork)
+        public IActionResult Get([FromServices] IUnitOfWorkAsync<SqlConnection> unitOfWork)
         {
-            _unitOfWork = unitOfWork;
+            return new OkObjectResult(unitOfWork.Repository<Product>().Select());
         }
 
-        public IActionResult Get()
+        [HttpGet("with_repository_injection")]
+        public IActionResult GetWithRepositoryInjection([FromServices] IRepository<SqlConnection, Product> repository)
         {
-            return new OkObjectResult(_unitOfWork.Repository<Product>().Select());
+            return new OkObjectResult(repository.Select());
         }
     }
 }

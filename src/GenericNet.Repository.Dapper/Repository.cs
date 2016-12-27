@@ -4,9 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Data;
-using System.Data.Common;
 using System.Data.SqlClient;
-using System.Reflection;
 using Dapper;
 
 namespace GenericNet.Repository.Dapper
@@ -16,10 +14,12 @@ namespace GenericNet.Repository.Dapper
         where TEntity : class
     {
         protected readonly TConnection Connection;
+        private readonly string _table;
 
-        public Repository(TConnection connection)
+        public Repository(TConnection connection, string table = null)
         {
             Connection = connection;
+            _table = table;
         }
 
         public virtual IEnumerable<TEntity> Select(
@@ -32,7 +32,8 @@ namespace GenericNet.Repository.Dapper
             int? take = null,
             bool tracking = false)
         {
-            return Connection.Query<TEntity>($"SELECT * FROM {typeof(TEntity).Name}");
+            string tableName = _table ?? typeof(TEntity).Name;
+            return Connection.Query<TEntity>($"SELECT * FROM {tableName}");
         }
 
         public virtual IEnumerable<TResult> Select<TResult>(
