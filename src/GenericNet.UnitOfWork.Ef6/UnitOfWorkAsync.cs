@@ -9,7 +9,7 @@ namespace GenericNet.UnitOfWork.Ef6
 {
     public class UnitOfWorkAsync<TIdentifier> : UnitOfWork<TIdentifier>, IUnitOfWorkAsync<TIdentifier> where TIdentifier : class
     {
-        public UnitOfWorkAsync(IServiceProvider serviceProvider) : base(serviceProvider)
+        public UnitOfWorkAsync(IServiceProvider serviceProvider, string nameOrConnectionString) : base(serviceProvider, nameOrConnectionString)
         {
         }
 

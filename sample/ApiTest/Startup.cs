@@ -55,9 +55,14 @@ namespace ApiTest
                 });
 
             services.AddScoped<SqlConnection>()
-            .AddDbContext<AdventureWorksContext>(options => options.UseSqlServer(Configuration.GetConnectionString("GenericNetDb")))
-            .AddScoped<IUnitOfWorkAsync<AdventureWorksContext>, UnitOfWorkAsync<AdventureWorksContext>>()
-            .AddScoped(typeof(IRepository<AdventureWorksContext, Product>), typeof(GenericNet.Repository.EfCore.Repository<AdventureWorksContext, Product>))
+            .AddScoped(provider => new AdventureWorksEfCoreContext(provider, new DbContextOptionsBuilder().UseSqlServer(Configuration.GetConnectionString("GenericNetDb")).Options))
+            .AddScoped(provider => new AdventureWorksEf6Context(provider, Configuration.GetConnectionString("GenericNetDb")))
+
+            .AddScoped<IUnitOfWorkAsync<AdventureWorksEfCoreContext>>(provider => provider.GetService<AdventureWorksEfCoreContext>())
+            .AddScoped<IUnitOfWorkAsync<AdventureWorksEf6Context>>(provider => provider.GetService<AdventureWorksEf6Context>())
+
+            .AddScoped<IRepository<AdventureWorksEfCoreContext, Product>, GenericNet.Repository.EfCore.Repository<AdventureWorksEfCoreContext, Product>>()
+            .AddScoped<IRepository<AdventureWorksEf6Context, Product>, GenericNet.Repository.Ef6.Repository<AdventureWorksEf6Context, Product>>()
 
             .AddScoped(provider => new SqlConnection(Configuration.GetConnectionString("GenericNetDb")))
             .AddScoped<IUnitOfWorkAsync<SqlConnection>>(provider => new GenericNet.UnitOfWork.Dapper.UnitOfWorkAsync<SqlConnection>(provider))

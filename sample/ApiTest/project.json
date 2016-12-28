@@ -11,6 +11,7 @@
       "version": "1.0.0",
       "target": "project"
     },
+    "GenericNet.Repository.Ef6": "1.0.0",
     "GenericNet.Repository.EfCore": {
       "version": "1.0.0",
       "target": "project"
@@ -23,6 +24,7 @@
       "version": "1.0.0",
       "target": "project"
     },
+    "GenericNet.UnitOfWork.Ef6": "1.0.0",
     "GenericNet.UnitOfWork.EfCore": {
       "version": "1.0.0",
       "target": "project"
@@ -39,11 +41,7 @@
     "Microsoft.Extensions.Configuration.UserSecrets": "1.1.0",
     "Microsoft.Extensions.Logging": "1.1.0",
     "Microsoft.Extensions.Logging.Console": "1.1.0",
-    "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.0",
-    "Microsoft.NETCore.App": {
-      "version": "1.1.0",
-      "type": "platform"
-    }
+    "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.0"
   },
 
   "tools": {
@@ -51,7 +49,7 @@
   },
 
   "frameworks": {
-    "netcoreapp1.1": {}
+    "net461": {}
   },
 
   "buildOptions": {

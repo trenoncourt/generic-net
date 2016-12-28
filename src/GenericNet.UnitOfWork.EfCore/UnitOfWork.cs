@@ -15,7 +15,7 @@ namespace GenericNet.UnitOfWork.EfCore
         protected IDbConnection Connection;
         protected IDbTransaction Transaction;
 
-        public UnitOfWork(IServiceProvider serviceProvider)
+        public UnitOfWork(IServiceProvider serviceProvider, DbContextOptions dbContextOptions) : base(dbContextOptions)
         {
             ServiceProvider = serviceProvider;
         }

@@ -3,13 +3,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using GenericNet.Repository.Abstractions;
 using GenericNet.UnitOfWork.Abstractions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GenericNet.UnitOfWork.EfCore
 {
     public class UnitOfWorkAsync<TIdentifier> : UnitOfWork<TIdentifier>, IUnitOfWorkAsync<TIdentifier> where TIdentifier : class
     {
-        public UnitOfWorkAsync(IServiceProvider serviceProvider) : base(serviceProvider)
+        public UnitOfWorkAsync(IServiceProvider serviceProvider, DbContextOptions dbContextOptions) : base(serviceProvider, dbContextOptions)
         {
         }
 

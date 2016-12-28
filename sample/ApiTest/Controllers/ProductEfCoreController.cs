@@ -9,13 +9,13 @@ namespace ApiTest.Controllers
     [Route("api/ProductEfCore")]
     public class ProductEfCoreController
     {
-        public IActionResult Get([FromServices] IUnitOfWorkAsync<AdventureWorksContext> unitOfWork)
+        public IActionResult Get([FromServices] IUnitOfWorkAsync<AdventureWorksEfCoreContext> unitOfWork)
         {
            return new OkObjectResult(unitOfWork.Repository<Product>().Select());
         }
 
         [HttpGet("with_repository_injection")]
-        public IActionResult GetWithRepositoryInjection([FromServices] IRepository<AdventureWorksContext, Product> repository)
+        public IActionResult GetWithRepositoryInjection([FromServices] IRepository<AdventureWorksEfCoreContext, Product> repository)
         {
            return new OkObjectResult(repository.Select());
         }

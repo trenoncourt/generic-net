@@ -1,24 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using GenericNet.UnitOfWork.EfCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.Logging;
 
 namespace ApiTest.Data
 {
-    public class AdventureWorksContext : DbContext
+    public class AdventureWorksEfCoreContext : UnitOfWorkAsync<AdventureWorksEfCoreContext>
     {
-        private readonly ILoggerFactory _loggerFactory;
-
-        public AdventureWorksContext(ILoggerFactory loggerFactory)
+        public AdventureWorksEfCoreContext(IServiceProvider serviceProvider, DbContextOptions dbContextOptions) : base(serviceProvider, dbContextOptions)
         {
-            _loggerFactory = loggerFactory;
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseLoggerFactory(_loggerFactory);
-            //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-            optionsBuilder.UseSqlServer(@"Server=tcp:trenoncourttest2.database.windows.net,1433;Initial Catalog=trenoncourttest2;Persist Security Info=False;User ID=trenoncourt;Password=Amour1105//0;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
-            //optionsBuilder.UseSqlServer(@"Server=.;Initial Catalog=trenoncourttest;Integrated Security=True;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -17,7 +17,7 @@ namespace GenericNet.UnitOfWork.Ef6
         protected IDbConnection Connection;
         protected IDbTransaction Transaction;
 
-        public UnitOfWork(IServiceProvider serviceProvider)
+        public UnitOfWork(IServiceProvider serviceProvider, string nameOrConnectionString) : base(nameOrConnectionString)
         {
             ServiceProvider = serviceProvider;
         }

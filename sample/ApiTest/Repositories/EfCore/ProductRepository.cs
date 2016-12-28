@@ -5,9 +5,9 @@ using GenericNet.Repository.EfCore;
 
 namespace ApiTest.Repositories.EfCore
 {
-    public class ProductRepository : Repository<AdventureWorksContext, Product>, IProductRepository
+    public class ProductRepository : Repository<AdventureWorksEfCoreContext, Product>, IProductRepository
     {
-        public ProductRepository(AdventureWorksContext context) : base(context)
+        public ProductRepository(AdventureWorksEfCoreContext context) : base(context)
         {
         }
 

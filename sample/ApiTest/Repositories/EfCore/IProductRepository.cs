@@ -4,7 +4,7 @@ using GenericNet.Repository.Abstractions;
 
 namespace ApiTest.Repositories.EfCore
 {
-    public interface IProductRepository : IRepository<AdventureWorksContext, Product>
+    public interface IProductRepository : IRepository<AdventureWorksEfCoreContext, Product>
     {
         IEnumerable<dynamic> GetProductsProjection();
     }
