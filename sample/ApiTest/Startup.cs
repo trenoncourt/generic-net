@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Data.SqlClient;
+using ApiTest.Repositories.Dapper;
 
 namespace ApiTest
 {
@@ -54,14 +55,15 @@ namespace ApiTest
                 });
 
             services.AddScoped<SqlConnection>()
-            .AddDbContext<AdventureWorksContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ShareezDev")))
+            .AddDbContext<AdventureWorksContext>(options => options.UseSqlServer(Configuration.GetConnectionString("GenericNetDb")))
             .AddScoped<IUnitOfWorkAsync<AdventureWorksContext>, UnitOfWorkAsync<AdventureWorksContext>>()
             .AddScoped(typeof(IRepository<AdventureWorksContext, Product>), typeof(GenericNet.Repository.EfCore.Repository<AdventureWorksContext, Product>))
 
-            .AddScoped(provider => new SqlConnection(Configuration.GetConnectionString("ShareezDev")))
+            .AddScoped(provider => new SqlConnection(Configuration.GetConnectionString("GenericNetDb")))
             .AddScoped<IUnitOfWorkAsync<SqlConnection>>(provider => new GenericNet.UnitOfWork.Dapper.UnitOfWorkAsync<SqlConnection>(provider))
             .AddScoped<IRepository<SqlConnection, Product>>(provider => 
-                new Repository<SqlConnection,Product>(provider, "SalesLT.Product"));
+                new Repository<SqlConnection,Product>(provider, "SalesLT.Product"))
+            .AddScoped<IProductRepository, ProductRepository>();
 
         }
         

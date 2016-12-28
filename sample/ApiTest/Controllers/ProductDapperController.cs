@@ -1,5 +1,6 @@
 ﻿using System.Data.SqlClient;
 using ApiTest.Data;
+using ApiTest.Repositories.Dapper;
 using GenericNet.Repository.Abstractions;
 using GenericNet.UnitOfWork.Abstractions;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,12 @@ namespace ApiTest.Controllers
         public IActionResult GetWithRepositoryInjection([FromServices] IRepository<SqlConnection, Product> repository)
         {
             return new OkObjectResult(repository.Select());
+        }
+
+        [HttpGet("with_custom_repository")]
+        public IActionResult GetWithCustomRepository([FromServices] IProductRepository repository)
+        {
+            return new OkObjectResult(repository.GetProductsProjection());
         }
     }
 }
