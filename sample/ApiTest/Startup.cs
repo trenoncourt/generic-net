@@ -1,6 +1,7 @@
-﻿using ApiTest.Data;
+﻿using System;
+using ApiTest.Data;
 using GenericNet.Repository.Abstractions;
-using GenericNet.Repository.EfCore;
+using GenericNet.Repository.Dapper;
 using GenericNet.UnitOfWork.Abstractions;
 using GenericNet.UnitOfWork.EfCore;
 using Microsoft.AspNetCore.Builder;
@@ -55,11 +56,12 @@ namespace ApiTest
             services.AddScoped<SqlConnection>()
             .AddDbContext<AdventureWorksContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ShareezDev")))
             .AddScoped<IUnitOfWorkAsync<AdventureWorksContext>, UnitOfWorkAsync<AdventureWorksContext>>()
-            .AddScoped(typeof(IRepository<AdventureWorksContext, Product>), typeof(Repository<AdventureWorksContext, Product>))
+            .AddScoped(typeof(IRepository<AdventureWorksContext, Product>), typeof(GenericNet.Repository.EfCore.Repository<AdventureWorksContext, Product>))
 
             .AddScoped(provider => new SqlConnection(Configuration.GetConnectionString("ShareezDev")))
             .AddScoped<IUnitOfWorkAsync<SqlConnection>>(provider => new GenericNet.UnitOfWork.Dapper.UnitOfWorkAsync<SqlConnection>(provider))
-            .AddScoped<IRepository<SqlConnection, Product>>(provider => new GenericNet.Repository.Dapper.Repository<SqlConnection,Product>(provider.GetService<SqlConnection>(), "SalesLT.Product"));
+            .AddScoped<IRepository<SqlConnection, Product>>(provider => 
+                new Repository<SqlConnection,Product>(provider, "SalesLT.Product"));
 
         }
         

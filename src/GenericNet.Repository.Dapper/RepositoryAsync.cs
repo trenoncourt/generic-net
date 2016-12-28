@@ -2,10 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Dapper;
 
 namespace GenericNet.Repository.Dapper
 {
@@ -13,10 +15,11 @@ namespace GenericNet.Repository.Dapper
         where TConnection : class, IDbConnection, new()
         where TEntity : class
     {
-        public RepositoryAsync(TConnection context) : base(context)
+        public RepositoryAsync(IServiceProvider sp, string table = null) : base(sp, table)
         {
         }
-        public virtual Task<IEnumerable<TEntity>> SelectAsync(
+
+        public virtual async Task<IEnumerable<TEntity>> SelectAsync(
             Expression<Func<TEntity, bool>> where = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             List<Expression<Func<TEntity, object>>> includes = null,
@@ -26,10 +29,10 @@ namespace GenericNet.Repository.Dapper
             int? take = null,
             bool tracking = false)
         {
-            throw new NotImplementedException();
+            return Query(await Connection.QueryAsync<TEntity>($"SELECT * FROM {TableName}"));
         }
 
-        public virtual Task<IEnumerable<TResult>> SelectAsync<TResult>(
+        public virtual async Task<IEnumerable<TResult>> SelectAsync<TResult>(
             Expression<Func<TEntity, TResult>> select,
             Expression<Func<TEntity, bool>> where = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
@@ -40,11 +43,16 @@ namespace GenericNet.Repository.Dapper
             int? take = null,
             bool tracking = false)
         {
-            throw new NotImplementedException();
+            return Query(await Connection.QueryAsync<TEntity>($"SELECT * FROM {TableName}")).Select(select.Compile());
         }
 
         public virtual Task<TEntity> FindAsync(params object[] keyValues)
         {
+            SqlConnection sqlConnection = Connection as SqlConnection;
+            if (sqlConnection != null)
+            {
+                return Connection.QueryFirstOrDefaultAsync<TEntity>($"SELECT TOP 1 FROM {TableName} WHERE id = @key", keyValues);
+            }
             throw new NotImplementedException();
         }
 

@@ -4,6 +4,8 @@
   "dependencies": {
     "Dapper": "1.50.2",
     "GenericNet.Repository.Abstractions": "*",
+    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0",
+    "Microsoft.Extensions.Logging.Abstractions": "1.1.0",
     "NETStandard.Library": "1.6.1"
   },
 
