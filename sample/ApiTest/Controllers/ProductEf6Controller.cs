@@ -1,4 +1,5 @@
 ﻿using ApiTest.Data;
+using ApiTest.Repositories.Ef6;
 using GenericNet.Repository.Abstractions;
 using GenericNet.UnitOfWork.Abstractions;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,12 @@ namespace ApiTest.Controllers
         public IActionResult GetWithRepositoryInjection([FromServices] IRepository<AdventureWorksEf6Context, Product> repository)
         {
             return new OkObjectResult(repository.Select());
+        }
+
+        [HttpGet("with_custom_repository")]
+        public IActionResult GetWithCustomRepository([FromServices] IProductRepository repository)
+        {
+            return new OkObjectResult(repository.GetProductsProjection());
         }
     }
 }
