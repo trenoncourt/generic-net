@@ -63,7 +63,8 @@ namespace ApiTest
             .AddScoped<IUnitOfWorkAsync<SqlConnection>>(provider => new GenericNet.UnitOfWork.Dapper.UnitOfWorkAsync<SqlConnection>(provider))
             .AddScoped<IRepository<SqlConnection, Product>>(provider => 
                 new Repository<SqlConnection,Product>(provider, "SalesLT.Product"))
-            .AddScoped<IProductRepository, ProductRepository>();
+            .AddScoped<IProductRepository, ProductRepository>()
+            .AddScoped<Repositories.EfCore.IProductRepository, Repositories.EfCore.ProductRepository>();
 
         }
         
