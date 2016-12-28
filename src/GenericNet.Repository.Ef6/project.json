@@ -2,6 +2,8 @@
   "version": "1.0.0",
 
   "dependencies": {
+    "EntityFramework": "6.1.3",
+    "GenericNet.Repository.Abstractions": "1.0.0",
     "NETStandard.Library": "1.6.1"
   },
 
