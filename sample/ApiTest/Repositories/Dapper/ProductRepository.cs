@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Reflection;
 using ApiTest.Data.Entities;
+using ApiTest.Data.Tables;
 using ApiTest.Dto;
 using Dapper;
 using Dommel;
@@ -13,15 +14,16 @@ namespace ApiTest.Repositories.Dapper
 {
     public class ProductRepository : Repository<SqlConnection, Product>, IProductRepository
     {
-        public ProductRepository(IServiceProvider sp) : base(sp)
+        private readonly ProductTable _productTable;
+
+        public ProductRepository(IServiceProvider sp, ProductTable productTable) : base(sp)
         {
+            _productTable = productTable;
         }
 
         public IEnumerable<dynamic> GetProductsProjection()
         {
-            PropertyInfo pName = PropertyHelper<Product>.GetProperty(p => p.Name);
-            PropertyInfo pColor = PropertyHelper<Product>.GetProperty(p => p.Color);
-            return Connection.Query($"SELECT {pName.Name}, {pColor.Name} FROM {TableName}");
+            return Connection.Query($"SELECT {_productTable.NameName}, {_productTable.ColorName} FROM {_productTable.TableName}");
         }
 
         public IEnumerable<ProductDto> GetProductsDtoProjection()

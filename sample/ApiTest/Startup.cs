@@ -16,6 +16,7 @@ using System.Data.SqlClient;
 using ApiTest.Data.Contexts;
 using ApiTest.Data.Entities;
 using ApiTest.Data.Mappings;
+using ApiTest.Data.Tables;
 using ApiTest.Repositories.Dapper;
 using Dapper.FluentMap;
 using Dapper.FluentMap.Dommel;
@@ -60,7 +61,8 @@ namespace ApiTest
                 });
             DapperMapping.Initialize();
 
-            services.AddScoped<SqlConnection>()
+            services.AddSingleton<ProductTable>()
+
             .AddScoped(provider => new AdventureWorksEfCoreContext(provider, new DbContextOptionsBuilder().UseSqlServer(Configuration.GetConnectionString("GenericNetDb")).Options))
             .AddScoped(provider => new AdventureWorksEf6Context(provider, Configuration.GetConnectionString("GenericNetDb")))
 
