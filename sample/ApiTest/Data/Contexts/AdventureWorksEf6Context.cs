@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Data.Entity;
+using ApiTest.Data.Entities;
 using GenericNet.UnitOfWork.Ef6;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace ApiTest.Data
+namespace ApiTest.Data.Contexts
 {
     public class AdventureWorksEf6Context : UnitOfWorkAsync<AdventureWorksEf6Context>
     {
@@ -15,7 +16,6 @@ namespace ApiTest.Data
             Configuration.ProxyCreationEnabled = false;
             Configuration.LazyLoadingEnabled = false;
         }
-
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

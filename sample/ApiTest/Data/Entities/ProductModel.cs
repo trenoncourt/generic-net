@@ -1,20 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ApiTest.Data
+namespace ApiTest.Data.Entities
 {
-    public partial class ProductDescription
+    public partial class ProductModel
     {
-        public ProductDescription()
+        public ProductModel()
         {
+            Product = new HashSet<Product>();
             ProductModelProductDescription = new HashSet<ProductModelProductDescription>();
         }
 
-        public int ProductDescriptionId { get; set; }
-        public string Description { get; set; }
+        public int ProductModelId { get; set; }
+        public string Name { get; set; }
+        public string CatalogDescription { get; set; }
         public Guid Rowguid { get; set; }
         public DateTime ModifiedDate { get; set; }
 
+        public virtual ICollection<Product> Product { get; set; }
         public virtual ICollection<ProductModelProductDescription> ProductModelProductDescription { get; set; }
     }
 }

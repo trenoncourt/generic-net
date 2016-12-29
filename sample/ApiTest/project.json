@@ -1,8 +1,10 @@
-﻿{
+{
   "userSecretsId": "aspnet-generic-net-dx01dbe4-ad78-5p19-9b88-5z93f4b15229",
 
   "dependencies": {
     "Dapper": "1.50.2",
+    "Dapper.FluentMap": "1.5.1",
+    "Dapper.FluentMap.Dommel": "1.4.2",
     "GenericNet.Repository.Abstractions": {
       "version": "1.0.0",
       "target": "project"

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ApiTest.Data
+namespace ApiTest.Data.Entities
 {
     public partial class SalesOrderHeader
     {

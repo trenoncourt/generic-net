@@ -1,5 +1,6 @@
 ﻿using System.Data.SqlClient;
 using ApiTest.Data;
+using ApiTest.Data.Entities;
 using ApiTest.Repositories.Dapper;
 using GenericNet.Repository.Abstractions;
 using GenericNet.UnitOfWork.Abstractions;
@@ -25,6 +26,12 @@ namespace ApiTest.Controllers
         public IActionResult GetWithCustomRepository([FromServices] IProductRepository repository)
         {
             return new OkObjectResult(repository.GetProductsProjection());
+        }
+
+        [HttpGet("with_dto_projection")]
+        public IActionResult GetWithDtoProjection([FromServices] IProductRepository repository)
+        {
+            return new OkObjectResult(repository.GetProductsDtoProjection());
         }
     }
 }

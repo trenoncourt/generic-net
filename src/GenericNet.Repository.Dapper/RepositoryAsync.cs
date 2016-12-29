@@ -15,7 +15,7 @@ namespace GenericNet.Repository.Dapper
         where TConnection : class, IDbConnection, new()
         where TEntity : class
     {
-        public RepositoryAsync(IServiceProvider sp, string table = null) : base(sp, table)
+        public RepositoryAsync(IServiceProvider sp, string table = null) : base(sp)
         {
         }
 

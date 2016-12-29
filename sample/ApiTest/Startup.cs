@@ -13,7 +13,12 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Data.SqlClient;
+using ApiTest.Data.Contexts;
+using ApiTest.Data.Entities;
+using ApiTest.Data.Mappings;
 using ApiTest.Repositories.Dapper;
+using Dapper.FluentMap;
+using Dapper.FluentMap.Dommel;
 
 namespace ApiTest
 {
@@ -53,6 +58,7 @@ namespace ApiTest
                     settings.NullValueHandling = NullValueHandling.Ignore;
                     settings.DefaultValueHandling = DefaultValueHandling.Ignore;
                 });
+            DapperMapping.Initialize();
 
             services.AddScoped<SqlConnection>()
             .AddScoped(provider => new AdventureWorksEfCoreContext(provider, new DbContextOptionsBuilder().UseSqlServer(Configuration.GetConnectionString("GenericNetDb")).Options))
@@ -66,12 +72,10 @@ namespace ApiTest
 
             .AddScoped(provider => new SqlConnection(Configuration.GetConnectionString("GenericNetDb")))
             .AddScoped<IUnitOfWorkAsync<SqlConnection>>(provider => new GenericNet.UnitOfWork.Dapper.UnitOfWorkAsync<SqlConnection>(provider))
-            .AddScoped<IRepository<SqlConnection, Product>>(provider => 
-                new Repository<SqlConnection,Product>(provider, "SalesLT.Product"))
+            .AddScoped<IRepository<SqlConnection, Product>, Repository<SqlConnection,Product>>()
             .AddScoped<IProductRepository, ProductRepository>()
             .AddScoped<Repositories.EfCore.IProductRepository, Repositories.EfCore.ProductRepository>()
             .AddScoped<Repositories.Ef6.IProductRepository, Repositories.Ef6.ProductRepository>();
-
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)

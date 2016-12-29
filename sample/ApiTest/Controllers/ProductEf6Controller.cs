@@ -1,4 +1,6 @@
 ﻿using ApiTest.Data;
+using ApiTest.Data.Contexts;
+using ApiTest.Data.Entities;
 using ApiTest.Repositories.Ef6;
 using GenericNet.Repository.Abstractions;
 using GenericNet.UnitOfWork.Abstractions;

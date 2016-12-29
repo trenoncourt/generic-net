@@ -1,9 +1,10 @@
 ﻿using System;
+using ApiTest.Data.Entities;
 using GenericNet.UnitOfWork.EfCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace ApiTest.Data
+namespace ApiTest.Data.Contexts
 {
     public class AdventureWorksEfCoreContext : UnitOfWorkAsync<AdventureWorksEfCoreContext>
     {

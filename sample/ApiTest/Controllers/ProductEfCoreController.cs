@@ -1,4 +1,6 @@
 ﻿using ApiTest.Data;
+using ApiTest.Data.Contexts;
+using ApiTest.Data.Entities;
 using ApiTest.Repositories.EfCore;
 using Microsoft.AspNetCore.Mvc;
 using GenericNet.Repository.Abstractions;

@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Data;
 using System.Data.SqlClient;
 using Dapper;
+using Dommel;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -17,16 +18,14 @@ namespace GenericNet.Repository.Dapper
     {
         protected readonly TConnection Connection;
         protected readonly ILogger Logger;
-        private readonly string _table;
+        protected readonly string TableName;
 
-        public Repository(IServiceProvider sp, string table = null)
+        public Repository(IServiceProvider sp)
         {
             Connection = sp.GetService<TConnection>();
             Logger = sp.GetService<ILogger<Repository<TConnection, TEntity>>>();
-            _table = table;
+            TableName = DommelMapper.Resolvers.Table(typeof(TEntity)) ?? typeof(TEntity).Name;
         }
-
-        public string TableName => _table ?? typeof(TEntity).Name;
 
         public virtual IEnumerable<TEntity> Select(
             Expression<Func<TEntity, bool>> where = null,
@@ -38,7 +37,7 @@ namespace GenericNet.Repository.Dapper
             int? take = null,
             bool tracking = false)
         {
-            return Query(Connection.Query<TEntity>($"SELECT * FROM {TableName}"));
+            return Query(Connection.GetAll<TEntity>());
         }
 
         public virtual IEnumerable<TResult> Select<TResult>(
@@ -50,9 +49,9 @@ namespace GenericNet.Repository.Dapper
             int? takePage = null,
             int? skip = null,
             int? take = null,
-            bool tracking = false)
+            bool tracking = false) where TResult : class
         {
-            return Query(Connection.Query<TEntity>($"SELECT * FROM {TableName}")).Select(select.Compile());
+            return Query(Connection.GetAll<TResult>());
         }
 
         public virtual TEntity Find(params object[] key)
@@ -60,7 +59,7 @@ namespace GenericNet.Repository.Dapper
             SqlConnection sqlConnection = Connection as SqlConnection;
             if (sqlConnection != null)
             {
-                return Connection.QueryFirstOrDefault<TEntity>($"SELECT TOP 1 FROM {TableName} WHERE id = @key", key);
+                return Connection.Get<TEntity>(key);
             }
             throw new NotImplementedException();
         }
@@ -148,11 +147,11 @@ namespace GenericNet.Repository.Dapper
             throw new NotImplementedException();
         }
 
-        protected IEnumerable<TEntity> Query(
-            IEnumerable<TEntity> query,
-            Func<TEntity, bool> where = null,
-            Func<IEnumerable<TEntity>, IOrderedEnumerable<TEntity>> orderBy = null,
-            List<Expression<Func<TEntity, object>>> includes = null,
+        protected IEnumerable<T> Query<T>(
+            IEnumerable<T> query,
+            Func<T, bool> where = null,
+            Func<IEnumerable<T>, IOrderedEnumerable<T>> orderBy = null,
+            List<Expression<Func<T, object>>> includes = null,
             int? skipPage = null,
             int? takePage = null,
             int? skip = null,

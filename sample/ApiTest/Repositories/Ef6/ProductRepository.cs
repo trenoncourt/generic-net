@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using ApiTest.Data;
+using ApiTest.Data.Contexts;
+using ApiTest.Data.Entities;
 using GenericNet.Repository.Ef6;
 
 namespace ApiTest.Repositories.Ef6

@@ -42,7 +42,7 @@ namespace GenericNet.Repository.EfCore
             int? takePage = null,
             int? skip = null,
             int? take = null,
-            bool tracking = false)
+            bool tracking = false) where TResult : class
         {
             IQueryable<TEntity> query = Query(where, orderBy, includes, skipPage, takePage, skip, take, tracking);
             return query.Select(select).ToList();

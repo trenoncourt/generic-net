@@ -28,7 +28,7 @@ namespace GenericNet.Repository.Abstractions
             int? takePage = null,
             int? skip = null,
             int? take = null,
-            bool tracking = false);
+            bool tracking = false) where TResult : class;
 
         TEntity Find(params object[] keyValues);
         

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ApiTest.Data
+namespace ApiTest.Data.Entities
 {
     public partial class CustomerAddress
     {
