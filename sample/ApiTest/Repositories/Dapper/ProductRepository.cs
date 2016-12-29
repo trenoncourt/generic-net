@@ -6,8 +6,8 @@ using ApiTest.Data.Entities;
 using ApiTest.Dto;
 using Dapper;
 using Dommel;
+using GenericNet.Reflection.Property.Extensions;
 using GenericNet.Repository.Dapper;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace ApiTest.Repositories.Dapper
 {
@@ -19,7 +19,9 @@ namespace ApiTest.Repositories.Dapper
 
         public IEnumerable<dynamic> GetProductsProjection()
         {
-            return Connection.Query($"SELECT name, color FROM {TableName}");
+            PropertyInfo pName = PropertyHelper<Product>.GetProperty(p => p.Name);
+            PropertyInfo pColor = PropertyHelper<Product>.GetProperty(p => p.Color);
+            return Connection.Query($"SELECT {pName.Name}, {pColor.Name} FROM {TableName}");
         }
 
         public IEnumerable<ProductDto> GetProductsDtoProjection()

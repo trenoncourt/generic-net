@@ -34,6 +34,10 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "GenericNet.UnitOfWork.Ef6",
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "GenericNet.Repository.Ef6", "src\GenericNet.Repository.Ef6\GenericNet.Repository.Ef6.xproj", "{8A57DE5B-EC44-47E9-A985-96EB189C45CA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Reflection", "4 - Reflection", "{FCDFCF9E-16FF-43CF-A86B-92D7FC12648B}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "GenericNet.Reflection.Property.Extensions", "src\GenericNet.Reflection.Property.Extensions\GenericNet.Reflection.Property.Extensions.xproj", "{B112AC8A-79C0-4FC9-B0E9-79463105CEC9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -76,6 +80,10 @@ Global
 		{8A57DE5B-EC44-47E9-A985-96EB189C45CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A57DE5B-EC44-47E9-A985-96EB189C45CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A57DE5B-EC44-47E9-A985-96EB189C45CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B112AC8A-79C0-4FC9-B0E9-79463105CEC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B112AC8A-79C0-4FC9-B0E9-79463105CEC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B112AC8A-79C0-4FC9-B0E9-79463105CEC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B112AC8A-79C0-4FC9-B0E9-79463105CEC9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,5 +100,7 @@ Global
 		{6DA74CB4-C9BA-4DE7-8938-92B8E4F96A10} = {235BDFD6-DA83-4225-A350-0E669B5940B3}
 		{636E9B11-8EE0-41A3-9C8F-29BD3F1A89CB} = {B5DBA8DB-ADFB-437B-BC89-2B7647BC24EE}
 		{8A57DE5B-EC44-47E9-A985-96EB189C45CA} = {235BDFD6-DA83-4225-A350-0E669B5940B3}
+		{FCDFCF9E-16FF-43CF-A86B-92D7FC12648B} = {382D8695-2AED-4D16-AB40-1EFD85177A9C}
+		{B112AC8A-79C0-4FC9-B0E9-79463105CEC9} = {FCDFCF9E-16FF-43CF-A86B-92D7FC12648B}
 	EndGlobalSection
 EndGlobal

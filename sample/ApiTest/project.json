@@ -5,6 +5,7 @@
     "Dapper": "1.50.2",
     "Dapper.FluentMap": "1.5.1",
     "Dapper.FluentMap.Dommel": "1.4.2",
+    "GenericNet.Reflection.Property.Extensions": "1.0.0",
     "GenericNet.Repository.Abstractions": {
       "version": "1.0.0",
       "target": "project"
