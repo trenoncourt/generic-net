@@ -7,12 +7,20 @@ namespace GenericNet.Service.Abstractions
         where TIdentifier : class
         where TEntity : class
     {
-        TEntity Find(object key, bool activateTracking = false);
+        TEntity Find(params object[] keyValues);
+
+        IEnumerable<TEntity> Select(bool activateTracking = false);
+
         TEntity Insert(TEntity entity);
+
         void InsertRange(IEnumerable<TEntity> entities);
+
         TEntity Update(TEntity entity);
-        void Delete(object id);
+
+        void Delete(params object[] keyValues);
+
         void Delete(TEntity entity);
-        IQueryable<TEntity> Queryable();
+
+        IQueryable<TEntity> Queryable(bool activateTracking = false);
     }
 }

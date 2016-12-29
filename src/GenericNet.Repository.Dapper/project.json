@@ -7,7 +7,8 @@
     "GenericNet.Repository.Abstractions": "*",
     "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0",
     "Microsoft.Extensions.Logging.Abstractions": "1.1.0",
-    "NETStandard.Library": "1.6.1"
+    "NETStandard.Library": "1.6.1",
+    "System.Linq.Queryable": "4.3.0"
   },
 
   "frameworks": {

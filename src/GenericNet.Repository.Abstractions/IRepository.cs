@@ -9,70 +9,9 @@ namespace GenericNet.Repository.Abstractions
         where TIdentifier : class
         where TEntity : class
     {
-        IEnumerable<TEntity> Select(
-            Expression<Func<TEntity, bool>> where = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            List<Expression<Func<TEntity, object>>> includes = null,
-            int? skipPage = null,
-            int? takePage = null,
-            int? skip = null,
-            int? take = null,
-            bool tracking = false);
-
-        IEnumerable<TResult> Select<TResult>(
-            Expression<Func<TEntity, TResult>> select,
-            Expression<Func<TEntity, bool>> where = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            List<Expression<Func<TEntity, object>>> includes = null,
-            int? skipPage = null,
-            int? takePage = null,
-            int? skip = null,
-            int? take = null,
-            bool tracking = false) where TResult : class;
-
         TEntity Find(params object[] keyValues);
-        
-        TEntity FindFirst(
-            Expression<Func<TEntity, bool>> where = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            List<Expression<Func<TEntity, object>>> includes = null,
-            int? skipPage = null,
-            int? takePage = null,
-            int? skip = null,
-            int? take = null,
-            bool tracking = false);
 
-        TResult FindFirst<TResult>(
-            Expression<Func<TEntity, TResult>> select,
-            Expression<Func<TEntity, bool>> where = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            List<Expression<Func<TEntity, object>>> includes = null,
-            int? skipPage = null,
-            int? takePage = null,
-            int? skip = null,
-            int? take = null,
-            bool tracking = false);
-
-        TEntity FindLast(
-            Expression<Func<TEntity, bool>> where = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            List<Expression<Func<TEntity, object>>> includes = null,
-            int? skipPage = null,
-            int? takePage = null,
-            int? skip = null,
-            int? take = null,
-            bool tracking = false);
-
-        TResult FindLast<TResult>(
-            Expression<Func<TEntity, TResult>> select,
-            Expression<Func<TEntity, bool>> where = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            List<Expression<Func<TEntity, object>>> includes = null,
-            int? skipPage = null,
-            int? takePage = null,
-            int? skip = null,
-            int? take = null,
-            bool tracking = false);
+        IEnumerable<TEntity> Select(bool activateTracking = false);
 
         TEntity Insert(TEntity entity);
 
@@ -80,10 +19,10 @@ namespace GenericNet.Repository.Abstractions
 
         TEntity Update(TEntity entity);
 
-        void Delete(object id);
+        void Delete(params object[] keyValues);
 
         void Delete(TEntity entity);
 
-        IQueryable<TEntity> Queryable();
+        IQueryable<TEntity> Queryable(bool activateTracking = false);
     }
 }

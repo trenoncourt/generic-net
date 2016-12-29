@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using GenericNet.Repository.Abstractions;
@@ -16,34 +13,6 @@ namespace GenericNet.Repository.EfCore
         public RepositoryAsync(TDbContext context) : base(context)
         {
         }
-        public virtual async Task<IEnumerable<TEntity>> SelectAsync(
-            Expression<Func<TEntity, bool>> where = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            List<Expression<Func<TEntity, object>>> includes = null,
-            int? skipPage = null,
-            int? takePage = null,
-            int? skip = null,
-            int? take = null,
-            bool tracking = false)
-        {
-            IQueryable<TEntity> query = Query(where, orderBy, includes, skipPage, takePage, skip, take, tracking);
-            return await query.ToListAsync().ConfigureAwait(false);
-        }
-
-        public virtual async Task<IEnumerable<TResult>> SelectAsync<TResult>(
-            Expression<Func<TEntity, TResult>> select,
-            Expression<Func<TEntity, bool>> where = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            List<Expression<Func<TEntity, object>>> includes = null,
-            int? skipPage = null,
-            int? takePage = null,
-            int? skip = null,
-            int? take = null,
-            bool tracking = false)
-        {
-            IQueryable<TEntity> query = Query(where, orderBy, includes, skipPage, takePage, skip, take, tracking);
-            return await query.Select(select).ToListAsync().ConfigureAwait(false);
-        }
 
         public virtual Task<TEntity> FindAsync(params object[] keyValues)
         {
@@ -52,81 +21,28 @@ namespace GenericNet.Repository.EfCore
 
         public virtual Task<TEntity> FindAsync(object[] keyValues, CancellationToken cancellationToken)
         {
-            return DbSet.FindAsync(keyValues, cancellationToken);
+            return DbSet.FindAsync(cancellationToken, keyValues);
         }
 
-        public virtual Task<TEntity> FindFirstAsync(
-            Expression<Func<TEntity, bool>> where = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            List<Expression<Func<TEntity, object>>> includes = null,
-            int? skipPage = null,
-            int? takePage = null,
-            int? skip = null,
-            int? take = null,
-            bool tracking = false)
+        public virtual async Task<IEnumerable<TEntity>> SelectAsync(bool activateTracking = false)
         {
-            IQueryable<TEntity> query = Query(where, orderBy, includes, skipPage, takePage, skip, take, tracking);
-            return query.FirstOrDefaultAsync();
+            return await DbSet.ToListAsync().ConfigureAwait(false);
         }
 
-        public virtual Task<TResult> FindFirstAsync<TResult>(
-            Expression<Func<TEntity, TResult>> select,
-            Expression<Func<TEntity, bool>> where = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            List<Expression<Func<TEntity, object>>> includes = null,
-            int? skipPage = null,
-            int? takePage = null,
-            int? skip = null,
-            int? take = null,
-            bool tracking = false)
+        public virtual Task<bool> DeleteAsync(params object[] keyValues)
         {
-            IQueryable<TEntity> query = Query(where, orderBy, includes, skipPage, takePage, skip, take, tracking);
-            return query.Select(select).FirstOrDefaultAsync();
+            return DeleteAsync(keyValues, CancellationToken.None);
         }
 
-        public virtual Task<TEntity> FindLastAsync(
-            Expression<Func<TEntity, bool>> where = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            List<Expression<Func<TEntity, object>>> includes = null,
-            int? skipPage = null,
-            int? takePage = null,
-            int? skip = null,
-            int? take = null,
-            bool tracking = false)
+        public virtual async Task<bool> DeleteAsync(object[] keyValues, CancellationToken cancellationToken)
         {
-            IQueryable<TEntity> query = Query(where, orderBy, includes, skipPage, takePage, skip, take, tracking);
-            return query.LastOrDefaultAsync();
-        }
-
-        public virtual Task<TResult> FindLastAsync<TResult>(
-            Expression<Func<TEntity, TResult>> select,
-            Expression<Func<TEntity, bool>> where = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            List<Expression<Func<TEntity, object>>> includes = null,
-            int? skipPage = null,
-            int? takePage = null,
-            int? skip = null,
-            int? take = null,
-            bool tracking = false)
-        {
-            IQueryable<TEntity> query = Query(where, orderBy, includes, skipPage, takePage, skip, take, tracking);
-            return query.Select(select).LastOrDefaultAsync();
-        }
-        
-        public virtual Task<bool> DeleteAsync(object key)
-        {
-            return DeleteAsync(CancellationToken.None, key);
-        }
-
-        public virtual async Task<bool> DeleteAsync(CancellationToken cancellationToken, object key)
-        {
-            var entity = await FindAsync(cancellationToken, key).ConfigureAwait(false);
+            var entity = await FindAsync(cancellationToken, keyValues).ConfigureAwait(false);
 
             if (entity == null)
             {
                 return false;
             }
-            
+
             DbSet.Remove(entity);
 
             return true;

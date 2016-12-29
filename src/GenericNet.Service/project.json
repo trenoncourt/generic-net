@@ -2,6 +2,8 @@
   "version": "1.0.0",
 
   "dependencies": {
+    "GenericNet.Repository.Abstractions": "1.0.0",
+    "GenericNet.Service.Abstractions": "1.0.0",
     "NETStandard.Library": "1.6.1"
   },
 
