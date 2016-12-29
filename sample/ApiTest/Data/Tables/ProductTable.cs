@@ -6,10 +6,10 @@ namespace ApiTest.Data.Tables
 {
     public class ProductTable : ITable
     {
-        public string TableName => DommelMapper.Resolvers.Table(typeof(Product));
+        public string TableName { get; } = DommelMapper.Resolvers.Table(typeof(Product));
 
-        public string NameName => DommelMapper.Resolvers.Column(PropertyHelper<Product>.GetProperty(p => p.Name));
+        public string NameName { get; } = DommelMapper.Resolvers.Column(PropertyHelper<Product>.GetProperty(p => p.Name));
 
-        public string ColorName => DommelMapper.Resolvers.Column(PropertyHelper<Product>.GetProperty(p => p.Color));
+        public string ColorName { get; } = DommelMapper.Resolvers.Column(PropertyHelper<Product>.GetProperty(p => p.Color));
     }
 }
